@@ -11,7 +11,7 @@ image_dir = "image/"
 output_dir = "data_split/"
 split_ratios = (0.7, 0.15, 0.15)
 seed = 42
-log_path = "split_summary.csv"
+log_path = "models/split_summary.csv"
 
 def create_dir(path):
     if not os.path.exists(path):
