@@ -1,4 +1,8 @@
 import os
+import pandas as pd
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from app.model_loader import load_model
 import torch
 import torch.nn.functional as F
 from torchvision import transforms, datasets
@@ -9,6 +13,8 @@ from resnet_model import get_resnet18
 
 img_size = 224
 batch_size = 32
+threshold = 0.5
+log_path = "unknown_evaluate.csv"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model_path = "models/car_resnet18_model_best.pth"
 unknown_dir = "data_split/test_unknown/unknown"
@@ -47,13 +53,6 @@ unknown_loader = DataLoader(unknown_dataset, batch_size, shuffle=False)
 
 class_names = sorted(os.listdir("data_split/train"))
 
-def load_model(model_path, num_classes):
-    model = get_resnet18(num_classes)
-    model.load_state_dict(torch.load(model_path, map_location=device))
-    model.to(device)
-    model.eval()
-    return model
-
 model = load_model(model_path, len(class_names))
 
 print(f"Sum of Unknown Images: {len(unknown_dataset)}")
@@ -61,7 +60,7 @@ print(f"Sum of Unknown Images: {len(unknown_dataset)}")
 results = []
 
 with torch.no_grad():
-    for images, filenames in unknown_loader:
+    for images, img_names in unknown_loader:
         images = images.to(device)
         outputs = model(images)
         probs = F.softmax(outputs, dim=1)
@@ -70,10 +69,20 @@ with torch.no_grad():
         for i in range(images.size(0)):
             pred_class = class_names[preds[i].item()]
             confidence = probs[i][preds[i].item()]
-            img_name = filenames[i]
-            results.append((img_name, pred_class, confidence))
+            img_name = img_names[i]
 
-            if confidence < 0.5:
+            results.append({
+                "img_name": img_name, 
+                "predicted_label": pred_class, 
+                "confidence": confidence
+            })
+
+            if confidence < threshold:
                 print(f"{img_name}: Predicted: {pred_class}, Confidence: {confidence:.2f} -> Low Confidence")
             else:
-                print(f"{img_name}: Predicted: {pred_class}, COnfidence: {confidence:.2f}")
+                print(f"{img_name}: Predicted: {pred_class}, Confidence: {confidence:.2f}")
+
+df = pd.DataFrame(results)
+df = df.sort_values(by="confidence", ascending=False)
+df.to_csv(log_path, index=False)
+            

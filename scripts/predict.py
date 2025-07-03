@@ -1,4 +1,7 @@
 import os 
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from app.model_loader import load_model
 import torch
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
@@ -21,13 +24,6 @@ transform = transforms.Compose([
 ])
 
 class_names = sorted(os.listdir(test_dir))
-
-def load_model(model_path, num_classes):
-    model = get_resnet18(num_classes=num_classes)
-    model.load_state_dict(torch.load(model_path, map_location=device))
-    model.to(device)
-    model.eval()
-    return model
 
 model = load_model(model_path, len(class_names))
 
