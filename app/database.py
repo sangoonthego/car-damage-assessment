@@ -1,6 +1,4 @@
 import mysql.connector
-from datetime import datetime
-from pydantic import BaseModel
 
 def connect_db():
     return mysql.connector.connect(

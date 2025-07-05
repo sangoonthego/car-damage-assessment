@@ -7,13 +7,12 @@ from app.query import save_prediction_log, get_prediction, get_prediction_label,
 from app.query import UpdateLog
 from app.model_loader import load_model
 from app.predict_image import predict_utils
-import io
 import json
+from scripts.utils import model_path, class_names
 
 app = FastAPI()
 
 model_path = "models/car_resnet18_model_best.pth"
-class_names = ["bumper_dent", "bumper_scratch", "door_dent", "door_scratch", "glass_shatter", "head_lamp", "tail_lamp"]
 with open("class_names.json", "w") as file:
     json.dump(class_names, file)
     

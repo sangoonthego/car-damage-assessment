@@ -1,9 +1,9 @@
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 import torch
-import torch.nn as nn
-from torchvision import transforms, datasets
+from torchvision import datasets
 from torch.utils.data import DataLoader
 from app.model_loader import load_model
 
@@ -11,21 +11,8 @@ from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
-import numpy as np
-
-img_size = 224
-batch_size = 32
-model_path = "models/car_resnet18_model_best.pth"
-test_dir = "data_split/test"
-mean = [0.485, 0.456, 0.406]
-std = [0.229, 0.224, 0.225]
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-test_transform = transforms.Compose([
-    transforms.Resize((img_size, img_size)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=mean, std=std)
-])
+from scripts.utils import batch_size, model_path, device, test_transform
+from scripts.utils import test_dir
 
 test_dataset = datasets.ImageFolder(test_dir, transform=test_transform)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)

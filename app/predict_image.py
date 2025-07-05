@@ -1,21 +1,12 @@
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 import torch
 import torch.nn.functional as F
 from PIL import Image
 from io import BytesIO
-from torchvision import transforms
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-mean = [0.485, 0.456, 0.406]
-std = [0.229, 0.224, 0.225]
-img_size = 224
-
-transform = transforms.Compose([
-    transforms.Resize((img_size, img_size)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=mean, std=std)
-])
+from scripts.utils import device, transform
 
 def predict_utils(image_bytes, model, class_names):
     image = Image.open(BytesIO(image_bytes)).convert("RGB")

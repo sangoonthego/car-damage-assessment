@@ -2,30 +2,17 @@ import os
 import pandas as pd
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from app.model_loader import load_model
 import torch
 import torch.nn.functional as F
 from torchvision import transforms, datasets
 from torch.utils.data import DataLoader, Dataset
 from torchvision.datasets.folder import default_loader
-from PIL import Image
-from resnet_model import get_resnet18
+from scripts.utils import batch_size, threshold, device, model_path, transform
 
-img_size = 224
-batch_size = 32
-threshold = 0.5
 log_path = "unknown_evaluate.csv"
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model_path = "models/car_resnet18_model_best.pth"
 unknown_dir = "data_split/test_unknown/unknown"
-mean = [0.485, 0.456, 0.406]
-std = [0.229, 0.224, 0.225]
-
-transform = transforms.Compose([
-    transforms.Resize((img_size, img_size)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=mean, std=std)
-])
 
 class UnknownDataset(Dataset):
     def __init__(self, folder, transform=None):

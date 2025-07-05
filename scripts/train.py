@@ -1,4 +1,7 @@
 import os 
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+                
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
@@ -10,21 +13,10 @@ from tqdm import tqdm
 from dataset_loader import get_dataloader
 from resnet_model import get_resnet18
 from torch.optim.lr_scheduler import ReduceLROnPlateau
+from scripts.utils import epochs, batch_size, patience, lr, model_path, device
+from scripts.utils import train_dir, val_dir, test_dir 
 
-epochs = 30
-img_size = 224
-batch_size = 32
-patience = 5
-lr = 0.001
-model_path = "models/car_resnet18_model_best.pth"
 log_path = "models/train_log.csv"
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-mean = [0.485, 0.456, 0.406]
-std = [0.229, 0.224, 0.225]
-
-train_dir = "data_spilt/train"
-val_dir = "data_split/val"
-test_dir = "data_split/test"
 
 train_loader, val_loader, _, class_names = get_dataloader(train_dir, val_dir, test_dir, batch_size)
 
@@ -78,7 +70,7 @@ for epoch in range(epochs):
         pre_lr = optimizer.param_groups[0]["lr"]
         scheduler.step(val_loss)
         sub_lr = optimizer.param_groups[0]["lr"]
-        
+
         if sub_lr < pre_lr:
             print(f"LR reduced from {pre_lr:.6f} to {sub_lr:.6f}")
 
