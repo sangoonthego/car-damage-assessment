@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 import mysql.connector
 from datetime import datetime
 from pydantic import BaseModel
@@ -25,7 +24,7 @@ def save_prediction_log(img_name, pred_class, confidence):
     cursor.close()
     conn.close()
 
-def get_prediction_log():
+def get_prediction():
     conn = connect_db()
     cursor = conn.cursor(dictionary=True)
 
@@ -45,7 +44,29 @@ def get_prediction_log():
 
     return logs
 
-def get_prediction_log_by_image(img_name):
+def get_prediction_label(pred_class):
+    conn = connect_db()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        pred_class = pred_class.strip()
+        query = "" \
+        "SELECT * FROM prediction_logs WHERE LOWER(predicted_class) = LOWER(%s)"
+
+        cursor.execute(query, (pred_class,))
+        logs = cursor.fetchall()
+
+        return logs
+
+    except Exception as e:
+        print(f"SQL Fail: {e}")
+
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def get_prediction_image(img_name):
     conn = connect_db()
     cursor = conn.cursor(dictionary=True)
 
@@ -68,7 +89,7 @@ def get_prediction_log_by_image(img_name):
 class UpdateLog(BaseModel):
     corrected_label: str
 
-def update_prediction_log(id, corrected_label):
+def update_prediction(id, corrected_label):
     conn = connect_db()
     cursor = conn.cursor()
 
@@ -89,7 +110,7 @@ def update_prediction_log(id, corrected_label):
         cursor.close()
         conn.close()
     
-def delete_uncorrect_prediction_log(id):
+def delete_uncorrect_prediction(id):
     conn = connect_db()
     cursor = conn.cursor()
 

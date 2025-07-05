@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from fastapi import FastAPI, HTTPException, UploadFile, File
-from app.database import save_prediction_log, get_prediction_log, get_prediction_log_by_image, update_prediction_log, delete_uncorrect_prediction_log
+from app.database import save_prediction_log, get_prediction, get_prediction_label, get_prediction_image, update_prediction, delete_uncorrect_prediction
 from app.database import UpdateLog
 from app.model_loader import load_model
 from app.predict_image import predict_utils
@@ -37,16 +37,25 @@ async def predict_log(img_file: UploadFile = File(...)):
 
 @app.get("/get_logs")
 def get_all_logs():
-    get_log = get_prediction_log()
+    get_log = get_prediction()
 
     if not get_log:
         raise HTTPException(status_code=404, detail="Not Image Exist")
     
     return get_log
 
+@app.get("/get_logs/{pred_class}")
+def get_logs_by_label(pred_class: str):
+    get_pred_class = get_prediction_label(pred_class)
+
+    if not get_prediction_label:
+        raise HTTPException(status_code=404, detail=f"Label Named {pred_class} not Exist")
+    
+    return get_pred_class
+
 @app.get("/get_logs/{img_name}")
 def get_logs_by_name(img_name: str):
-    get_img_name = get_prediction_log_by_image(img_name)
+    get_img_name = get_prediction_image(img_name)
 
     if not get_img_name:
         raise HTTPException(status_code=404, detail=f"Image Named {img_name} not Exist")
@@ -55,7 +64,7 @@ def get_logs_by_name(img_name: str):
 
 @app.put("/update_logs/{id}")
 def update_logs(id: int, update: UpdateLog):
-    update_log = update_prediction_log(id, update.corrected_label)
+    update_log = update_prediction(id, update.corrected_label)
 
     if not update_log:
         raise HTTPException(status_code=404, detail=f"{id} Not Exist")
@@ -66,7 +75,7 @@ def update_logs(id: int, update: UpdateLog):
 
 @app.delete("/delete_logs/{id}")
 def delete_logs(id: int):
-    delete_log = delete_uncorrect_prediction_log(id)
+    delete_log = delete_uncorrect_prediction(id)
     
     if not delete_log:
         raise HTTPException(status_code=404, detail=f"{id} Not Exist")

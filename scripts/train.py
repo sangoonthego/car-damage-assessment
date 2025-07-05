@@ -78,6 +78,7 @@ for epoch in range(epochs):
         pre_lr = optimizer.param_groups[0]["lr"]
         scheduler.step(val_loss)
         sub_lr = optimizer.param_groups[0]["lr"]
+        
         if sub_lr < pre_lr:
             print(f"LR reduced from {pre_lr:.6f} to {sub_lr:.6f}")
 
