@@ -3,8 +3,8 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from fastapi import FastAPI, HTTPException, UploadFile, File
-from app.database import save_prediction_log, get_prediction, get_prediction_label, get_prediction_image, update_prediction, delete_uncorrect_prediction
-from app.database import UpdateLog
+from app.query import save_prediction_log, get_prediction, get_prediction_label, get_prediction_image, update_prediction, delete_uncorrect_prediction
+from app.query import UpdateLog
 from app.model_loader import load_model
 from app.predict_image import predict_utils
 import io
@@ -48,7 +48,7 @@ def get_all_logs():
 def get_logs_by_label(pred_class: str):
     get_pred_class = get_prediction_label(pred_class)
 
-    if not get_prediction_label:
+    if not get_pred_class:
         raise HTTPException(status_code=404, detail=f"Label Named {pred_class} not Exist")
     
     return get_pred_class
