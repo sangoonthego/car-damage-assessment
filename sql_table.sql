@@ -8,3 +8,6 @@ CREATE TABLE IF NOT EXISTS prediction_logs (
     confidence FLOAT,
     predicted_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+SELECT * FROM prediction_logs;
+

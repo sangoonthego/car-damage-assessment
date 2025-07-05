@@ -1,7 +1,8 @@
 import torch
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from scripts.resnet_model import get_resnet18
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

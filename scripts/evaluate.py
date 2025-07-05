@@ -1,9 +1,11 @@
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import torch
 import torch.nn as nn
 from torchvision import transforms, datasets
 from torch.utils.data import DataLoader
-from resnet_model import get_resnet18
+from app.model_loader import load_model
 
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
@@ -29,9 +31,7 @@ test_dataset = datasets.ImageFolder(test_dir, transform=test_transform)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 class_names = test_dataset.classes
 
-model = get_resnet18(num_classes=len(class_names)).to(device)
-model.load_state_dict(torch.load(model_path, map_location=device))
-model.eval()
+model = load_model(model_path, len(class_names))
 
 all_preds = []
 all_actuals = []

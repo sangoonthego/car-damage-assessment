@@ -1,13 +1,14 @@
 import os 
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from app.model_loader import load_model
+
 import torch
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
 from torchvision import transforms
+from app.model_loader import load_model
+from app.predict_image import predict_utils
 from PIL import Image
-from resnet_model import get_resnet18
 
 img_size = 224
 model_path = "models/car_resnet18_model_best.pth"
@@ -27,24 +28,15 @@ class_names = sorted(os.listdir(test_dir))
 
 model = load_model(model_path, len(class_names))
 
-def predict_image(image_path, model, class_names):
-    if not os.path.exists(image_path):
-        print(f"Image not found: {image_path}")
-
-    image = Image.open(image_path).convert("RGB")
-    input_tensor = transform(image).unsqueeze(0).to(device)
-
-    with torch.no_grad():
-        output = model(input_tensor)
-        prob = F.softmax(output, dim=1)[0]
-        pred_index = torch.argmax(prob).item()
-        pred_class = class_names[pred_index]
-        confidence = prob[pred_index].item()
-
-        return pred_class, confidence
-    
 image_path = "image/10.jpeg"
-pred_class, confidence = predict_image(image_path, model, class_names)
+
+if not os.path.exists(image_path):
+    print("FIle not Found!!!")
+
+with open(image_path, "rb") as file:
+    image_bytes = file.read()
+
+pred_class, confidence = predict_utils(image_bytes, model, class_names)
 print(f"{pred_class}: {confidence}")
 
 # test new downloaded image
