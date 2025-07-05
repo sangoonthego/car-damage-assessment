@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from app.model_loader import load_model
 import torch

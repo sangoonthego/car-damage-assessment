@@ -12,7 +12,6 @@ from scripts.utils import model_path, class_names
 
 app = FastAPI()
 
-model_path = "models/car_resnet18_model_best.pth"
 with open("class_names.json", "w") as file:
     json.dump(class_names, file)
     
@@ -21,8 +20,8 @@ model = load_model(model_path, num_classes=len(class_names))
 with open("class_names.json", "r") as file:
     class_names = json.load(file)
 
-@app.post("/predict_logs")
-async def predict_log(img_file: UploadFile = File(...)):
+@app.post("/predict")
+async def predict(img_file: UploadFile = File(...)):
     image_bytes = await img_file.read()
     pred_class, confidence = predict_utils(image_bytes, model, class_names)
     
@@ -34,8 +33,8 @@ async def predict_log(img_file: UploadFile = File(...)):
         "confidence": confidence
     }
 
-@app.get("/get_logs")
-def get_all_logs():
+@app.get("/get")
+def get_all():
     get_log = get_prediction()
 
     if not get_log:
@@ -43,8 +42,8 @@ def get_all_logs():
     
     return get_log
 
-@app.get("/get_logs/{pred_class}")
-def get_logs_by_label(pred_class: str):
+@app.get("/get/{pred_class}")
+def get_by_label(pred_class: str):
     get_pred_class = get_prediction_label(pred_class)
 
     if not get_pred_class:
@@ -52,8 +51,8 @@ def get_logs_by_label(pred_class: str):
     
     return get_pred_class
 
-@app.get("/get_logs/{img_name}")
-def get_logs_by_name(img_name: str):
+@app.get("/get/{img_name}")
+def get_by_name(img_name: str):
     get_img_name = get_prediction_image(img_name)
 
     if not get_img_name:
@@ -61,8 +60,8 @@ def get_logs_by_name(img_name: str):
     
     return get_img_name
 
-@app.put("/update_logs/{id}")
-def update_logs(id: int, update: UpdateLog):
+@app.put("/update/{id}")
+def update(id: int, update: UpdateLog):
     update_log = update_prediction(id, update.corrected_label)
 
     if not update_log:
@@ -72,8 +71,8 @@ def update_logs(id: int, update: UpdateLog):
         "message": "Updated"
     }
 
-@app.delete("/delete_logs/{id}")
-def delete_logs(id: int):
+@app.delete("/delete/{id}")
+def delete(id: int):
     delete_log = delete_uncorrect_prediction(id)
     
     if not delete_log:
