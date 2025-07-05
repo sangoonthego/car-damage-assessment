@@ -32,14 +32,16 @@ def get_prediction():
         cursor.execute(query)
         logs = cursor.fetchall()
 
+        return logs
+
     except Exception as e:
         print(f"SQL Fail: {e}")
         return False
 
-    cursor.close()
-    conn.close()
+    finally:
+        cursor.close()
+        conn.close()
 
-    return logs
 
 def get_prediction_label(pred_class):
     conn = connect_db()
@@ -74,14 +76,15 @@ def get_prediction_image(img_name):
 
         cursor.execute(query, (img_name,))
         logs = cursor.fetchall()
+
+        return logs
     
     except Exception as e:
         print(f"SQL Fail: {e}")
 
-    cursor.close()
-    conn.close()
-
-    return logs
+    finally:
+        cursor.close()
+        conn.close()
 
 class UpdateLog(BaseModel):
     corrected_label: str
