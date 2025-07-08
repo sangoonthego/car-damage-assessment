@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from fastapi import FastAPI, HTTPException, UploadFile, File
-from app.query import save_prediction_log, get_prediction, get_prediction_label, get_prediction_image, update_prediction, delete_uncorrect_prediction
+from app.query import save_prediction_log, get_prediction, get_prediction_label, get_best_prediction_label, get_prediction_image, update_prediction, delete_uncorrect_prediction
 from app.query import UpdateLog
 from app.model_loader import load_model
 from app.predict_image import predict_utils
@@ -50,6 +50,15 @@ def get_by_label(pred_class: str):
         raise HTTPException(status_code=404, detail=f"Label Named {pred_class} not Exist")
     
     return get_pred_class
+
+@app.get("/get/{pred_class}: {confidence}")
+def get_best_pred(pred_class: str, confidence: float):
+    get_best_pred = get_best_prediction_label(pred_class, confidence)
+
+    if not get_best_pred:
+        raise HTTPException(status_code=404, detail=f"Not Exist Prediction > {confidence}")
+    
+    return get_best_pred
 
 @app.get("/get/{img_name}")
 def get_by_name(img_name: str):

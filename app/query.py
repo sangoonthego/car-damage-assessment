@@ -42,7 +42,6 @@ def get_prediction():
         cursor.close()
         conn.close()
 
-
 def get_prediction_label(pred_class):
     conn = connect_db()
     cursor = conn.cursor(dictionary=True)
@@ -57,6 +56,27 @@ def get_prediction_label(pred_class):
 
         return logs
 
+    except Exception as e:
+        print(f"SQL Fail: {e}")
+
+    finally:
+        cursor.close()
+        conn.close()
+
+def get_best_prediction_label(pre_class, confidence):
+    conn = connect_db()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        pred_class = pred_class.strip()
+        query = "" \
+        "SELECT * FROM prediction_logs WHERE LOWER(predicted_class) = LOWER(%s) AND confidence > 0.9"
+
+        cursor.execute(query, (pre_class, confidence,))
+        logs = cursor.fetchall()
+        
+        return logs
+    
     except Exception as e:
         print(f"SQL Fail: {e}")
 
