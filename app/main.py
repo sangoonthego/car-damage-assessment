@@ -11,14 +11,8 @@ import json
 from scripts.utils import model_path, class_names
 
 app = FastAPI()
-
-with open("class_names.json", "w") as file:
-    json.dump(class_names, file)
     
 model = load_model(model_path, num_classes=len(class_names))
-
-with open("class_names.json", "r") as file:
-    class_names = json.load(file)
 
 @app.post("/predict")
 async def predict(img_file: UploadFile = File(...)):
@@ -33,7 +27,7 @@ async def predict(img_file: UploadFile = File(...)):
         "confidence": confidence
     }
 
-@app.get("/get")
+@app.get("/get/predictions")
 def get_all():
     get_log = get_prediction()
 
@@ -42,8 +36,9 @@ def get_all():
     
     return get_log
 
-@app.get("/get/{confidence}")
-def get_best_accuracy(confidence: float):
+@app.get("/get/predictions/confidence/{confidence}")
+def get_best_accuracy():
+    confidence = 0.9
     get_best_conf = get_best_confidence(confidence)
 
     if not get_best_conf:
@@ -51,7 +46,7 @@ def get_best_accuracy(confidence: float):
 
     return get_best_conf 
 
-@app.get("/get/{pred_class}")
+@app.get("/get/predictions/label/{pred_class}")
 def get_by_label(pred_class: str):
     get_pred_class = get_prediction_label(pred_class)
 
@@ -60,7 +55,7 @@ def get_by_label(pred_class: str):
     
     return get_pred_class
 
-@app.get("/get/{pred_class}: {confidence}")
+@app.get("/get/predictions/label/{pred_class}/confidence/{confidence}")
 def get_best_pred(pred_class: str, confidence: float):
     get_best_pred = get_best_prediction_label(pred_class, confidence)
 
@@ -69,7 +64,7 @@ def get_best_pred(pred_class: str, confidence: float):
     
     return get_best_pred
 
-@app.get("/get/{img_name}")
+@app.get("/get/predictions/image/{img_name}")
 def get_by_name(img_name: str):
     get_img_name = get_prediction_image(img_name)
 

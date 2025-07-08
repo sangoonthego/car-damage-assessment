@@ -2,6 +2,7 @@ import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+import logging
 from datetime import datetime
 from pydantic import BaseModel
 
@@ -35,7 +36,7 @@ def get_prediction():
         return logs
 
     except Exception as e:
-        print(f"SQL Fail: {e}")
+        logging.error(f"SQL Fail: {e}")
         return False
 
     finally:
@@ -48,7 +49,9 @@ def get_best_confidence(confidence):
 
     try:
         query = "" \
-        "SELECT * FROM prediction_logs WHERE confidence > 0.9 ORDER BY confidence DESC"
+        "SELECT * FROM prediction_logs " \
+        "WHERE confidence > %s " \
+        "ORDER BY confidence DESC"
 
         cursor.execute(query, (confidence,))
         logs = cursor.fetchall()
@@ -56,7 +59,8 @@ def get_best_confidence(confidence):
         return logs
     
     except Exception as e:
-        print(f"SQL Fail: {e}")
+        logging.error(f"SQL Fail: {e}")
+        return None
 
     finally:
         cursor.close()
@@ -70,7 +74,8 @@ def get_prediction_label(pred_class):
     try:
         pred_class = pred_class.strip()
         query = "" \
-        "SELECT * FROM prediction_logs WHERE LOWER(predicted_class) = LOWER(%s)"
+        "SELECT * FROM prediction_logs " \
+        "WHERE LOWER(predicted_class) = LOWER(%s)"
 
         cursor.execute(query, (pred_class,))
         logs = cursor.fetchall()
@@ -78,20 +83,22 @@ def get_prediction_label(pred_class):
         return logs
 
     except Exception as e:
-        print(f"SQL Fail: {e}")
+        logging.error(f"SQL Fail: {e}")
+        return None
 
     finally:
         cursor.close()
         conn.close()
 
-def get_best_prediction_label(pre_class, confidence):
+def get_best_prediction_label(pred_class, confidence):
     conn = connect_db()
     cursor = conn.cursor(dictionary=True)
 
     try:
         pred_class = pred_class.strip()
         query = "" \
-        "SELECT * FROM prediction_logs WHERE LOWER(predicted_class) = LOWER(%s) AND confidence > 0.9"
+        "SELECT * FROM prediction_logs " \
+        "WHERE LOWER(predicted_class) = LOWER(%s) AND confidence > 0.9"
 
         cursor.execute(query, (pre_class, confidence,))
         logs = cursor.fetchall()
@@ -99,7 +106,8 @@ def get_best_prediction_label(pre_class, confidence):
         return logs
     
     except Exception as e:
-        print(f"SQL Fail: {e}")
+        logging.error(f"SQL Fail: {e}")
+        return None
 
     finally:
         cursor.close()
@@ -113,7 +121,8 @@ def get_prediction_image(img_name):
     try:
         img_name = img_name.strip()
         query = "" \
-        "SELECT * FROM prediction_logs WHERE LOWER(image_name) = LOWER(%s)"
+        "SELECT * FROM prediction_logs " \
+        "WHERE LOWER(image_name) = LOWER(%s)"
 
         cursor.execute(query, (img_name,))
         logs = cursor.fetchall()
@@ -121,7 +130,8 @@ def get_prediction_image(img_name):
         return logs
     
     except Exception as e:
-        print(f"SQL Fail: {e}")
+        logging.error(f"SQL Fail: {e}")
+        return None
 
     finally:
         cursor.close()
@@ -145,7 +155,8 @@ def update_prediction(id, corrected_label):
         return affected > 0
     
     except Exception as e:
-        print(f"SQL Fail: {e}")
+        logging.error(f"SQL Fail: {e}")
+        return None
 
     finally:
         cursor.close()
@@ -157,7 +168,8 @@ def delete_uncorrect_prediction(id):
 
     try:   
         query = "" \
-        "DELETE FROM prediction_logs WHERE id = %s"
+        "DELETE FROM prediction_logs " \
+        "WHERE id = %s"
 
         cursor.execute(query, (id,))
         affected = cursor.rowcount
@@ -166,7 +178,8 @@ def delete_uncorrect_prediction(id):
         return affected > 0
     
     except Exception as e:
-        print(f"SQL Fail: {e}")
+        logging.error(f"SQL Fail: {e}")
+        return None
 
     finally:
         cursor.close()
