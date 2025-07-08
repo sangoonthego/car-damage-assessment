@@ -42,6 +42,27 @@ def get_prediction():
         cursor.close()
         conn.close()
 
+def get_best_confidence(confidence):
+    conn = connect_db()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        query = "" \
+        "SELECT * FROM prediction_logs WHERE confidence > 0.9 ORDER BY confidence DESC"
+
+        cursor.execute(query, (confidence,))
+        logs = cursor.fetchall()
+
+        return logs
+    
+    except Exception as e:
+        print(f"SQL Fail: {e}")
+
+    finally:
+        cursor.close()
+        conn.close()
+
+
 def get_prediction_label(pred_class):
     conn = connect_db()
     cursor = conn.cursor(dictionary=True)
