@@ -100,7 +100,7 @@ def get_best_prediction_label(pred_class, confidence):
         "SELECT * FROM prediction_logs " \
         "WHERE LOWER(predicted_class) = LOWER(%s) AND confidence > 0.9"
 
-        cursor.execute(query, (pre_class, confidence,))
+        cursor.execute(query, (pred_class, confidence,))
         logs = cursor.fetchall()
         
         return logs
