@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 7
+names: ['bumper_dent', 'bumper_scratch', 'door_dent', 'door_scratch', 'glass_shatter', 'head_lamp', 'tail_lamp']
+
+roboflow:
+  workspace: sangoonthego
+  project: car_damage_assessment-4nnnh
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/sangoonthego/car_damage_assessment-4nnnh/dataset/2

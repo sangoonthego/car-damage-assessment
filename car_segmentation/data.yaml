@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 21
+names: ['bumper_dent_minor', 'bumper_dent_moderate', 'bumper_dent_severe', 'bumper_scratch_minor', 'bumper_scratch_moderate', 'bumper_scratch_severe', 'door_dent_minor', 'door_dent_moderate', 'door_dent_severe', 'door_scratch_minor', 'door_scratch_moderate', 'door_scratch_severe', 'glass_shatter_minor', 'glass_shatter_moderate', 'glass_shatter_severe', 'head_lamp_minor', 'head_lamp_moderate', 'head_lamp_severe', 'tail_lamp_minor', 'tail_lamp_moderate', 'tail_lamp_severe']
+
+roboflow:
+  workspace: sangoonthego
+  project: car_damage_segmentation-2jjuf
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/sangoonthego/car_damage_segmentation-2jjuf/dataset/1
