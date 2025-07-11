@@ -10,7 +10,7 @@ lr = 0.001
 mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
 
-train_dir = "data_spilt/train"
+train_dir = "data_split/train"
 val_dir = "data_split/val"
 test_dir = "data_split/test"
 model_path = "models/car_resnet18_model_best.pth"

@@ -1,55 +1,54 @@
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
+import uuid
 import numpy as np
 import cv2
-import uuid
 from PIL import Image
 from ultralytics import YOLO
 
-segment_model_path = "runs/segment/train2/weights/best.pt"
-segment_model = YOLO(segment_model_path)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-seg_output_dir = "static/segment_masks"
-os.makedirs(seg_output_dir, exist_ok=True)
-
-def segment_objects(image_path):
-    image = Image.open(image_path).convert("RGB")
-    image_np = np.array(image)
-
-    results = segment_model.predict(source=image_np, save=False, conf=0.25, verbose=False)
+class ObjectSegmenter:
+    def __init__(self):
+        pass
     
-    segmentations = []
-    for result in results:
-        boxes = result.boxes
-        masks = result.masks
-        names = result.names
+    def __init__(self, model_path="runs/segment/train2/weights/best.pt", output_dir="static/segment_masks"):
+        self.model_path = model_path
+        self.output_dir = output_dir
+        os.makedirs(self.output_dir, exist_ok=True)
+        self.model = YOLO(self.model_path)
 
-        if masks is None:
-            continue
+    def segment_objects(self, image_path):
+        image = Image.open(image_path).convert("RGB")
+        image_np = np.array(image)
+        results = self.model.predict(source=image_np, save=False, conf=0.25, verbose=False)
+        
+        segmentations = []
+        for result in results:
+            boxes = result.boxes
+            masks = result.masks
+            names = result.names
 
-        for i in range(len(boxes)):
-            box = boxes[i]
-            class_id = int(box.cls.item())
-            confidence = float(box.conf.item())
-            class_name = names[class_id]
+            if masks is None:
+                continue
 
-            mask = masks.data[i].cpu().numpy()
-            mask = (mask * 255).astype(np.uint8)
+            for i, box in enumerate(boxes):
+                class_id = int(box.cls.item())
+                confidence = float(box.conf.item())
+                class_name = names[class_id]
 
-            mask_filename = f"{uuid.uuid4().hex}_{class_name}.png"
-            mask_path = os.path.join(seg_output_dir, mask_filename)
+                mask = masks.data[i].cpu().numpy()
+                mask = (mask * 255).astype(np.uint8)
 
-            cv2.imwrite(mask_path, mask)
+                mask_filename = f"{uuid.uuid4().hex}_{class_name}.png"
+                mask_path = os.path.join(self.output_dir, mask_filename)
 
-            segmentations.append({
-                "class": class_name,
-                "confidence": confidence,
-                "mask_path": mask_path.replace("\\", "/")
-            })
+                cv2.imwrite(mask_path, mask)
 
-    return segmentations
+                segmentations.append({
+                    "class": class_name,
+                    "confidence": confidence,
+                    "mask_path": mask_path.replace("\\", "/")
+                })
 
-
-    
+        return segmentations
