@@ -1,9 +1,11 @@
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import cv2
 from ultralytics import YOLO
+from app.severity_level import SeverityLevel
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 class ObjectDetector:
     def __init__(self, model_path="runs/detect/train2/weights/best.pt", conf=0.25):
@@ -17,12 +19,16 @@ class ObjectDetector:
 
         boxes = result.boxes
         for box in boxes:
-            detect_class = int(box.cls.item())
+            class_id = int(box.cls.item())
             confidence = float(box.conf.item())
+            detect_class = self.model.names[class_id]
+            level = SeverityLevel(detect_class)
+            severity = level.severity
             xyxy = box.xyxy[0].tolist()
             detections.append({
-                "class": self.model.names[detect_class],
+                "class": detect_class,
                 "confidence": confidence,
+                "severity": severity,
                 "x1": xyxy[0],
                 "y1": xyxy[1],
                 "x2": xyxy[2],

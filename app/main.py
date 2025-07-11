@@ -61,6 +61,14 @@ class CarDamageAssessmentAPI:
             if not get_segment:
                 raise HTTPException(status_code=404, detail="No segment image Exist")
             return get_segment
+        
+        @app.get("/get/segmentations/class/{predicted_class}/level/{severity}")
+        def get_segment_severity(predicted_class: str, severity: str):
+            segment_log = SegmentationLogManager()
+            get_segment = segment_log.get_segmentatation_severity(predicted_class, severity)
+            if not get_segment:
+                raise HTTPException(status_code=404, detail=f"Not label {predicted_class} and level {severity} Exist")
+            return get_segment
 
         @app.delete("/delete/segmentations/{id}")
         def delete_segment(id: int):
@@ -105,6 +113,14 @@ class CarDamageAssessmentAPI:
             if not get_detect_label:
                 raise HTTPException(status_code=404, detail=f"{detected_class} not Exist")
             return get_detect_label
+        
+        @app.get("/get/detectiosn/label/{detected_class}/level/{severity}")
+        def get_detect_severity(detected_class: str, severity: str):
+            detect_log = DetectionLogManager()
+            get_detect = detect_log.get_detection_severity(detected_class, severity)
+            if not get_detect:
+                raise HTTPException(status_code=404, detail=f"Not label {detected_class} and level {severity} Exist")
+            return get_detect
 
         @app.get("/get/detections/image/{img_name}")
         def get_detect_by_name(img_name: str):

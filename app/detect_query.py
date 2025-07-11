@@ -115,6 +115,29 @@ class DetectionLogManager:
         finally:
             cursor.close()
             conn.close()
+    
+    def get_detection_severity(self, detected_class, severity):
+        db = Database()
+        conn = db.connect()
+        cursor = conn.cursor(dictionary=True)
+
+        try:
+            query = "" \
+            "SELECT * FROM detection_logs" \
+            "WHERE LOWER(detected_class) = %s" \
+            "AND LOWER(severity) = %s"
+
+            cursor.execute(query, (detected_class, severity,))
+            logs = cursor.fetchall()
+            return logs
+        
+        except Exception as e:
+            logging.error(f"SQL Fail: {e}")
+            return None
+        
+        finally:
+            cursor.close()
+            conn.close()
 
     def delete_detection(self, id):
         db = Database()
