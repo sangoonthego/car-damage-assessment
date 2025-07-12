@@ -1,12 +1,11 @@
-import streamlit as st
 import os
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+import streamlit as st
 from app.detect_utils import ObjectDetector
 from app.segment_utils import ObjectSegmenter
 from app.severity_level import SeverityLevel
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 st.set_page_config(page_title="Car Damage Assessment", layout="wide")
 st.title("Car Damage Detection and Segmentation")
