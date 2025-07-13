@@ -2,7 +2,7 @@
 
 ## Author
 - Name: Nguyen Tuan Ngoc
-- University: DUT
+- University: Da Nang University of Science and Technology (DUT)
 - Student ID: 102230087
 
 ## Project Overview
@@ -11,6 +11,17 @@ This project provides an end-to-end solution for Sun* Insurance Company for car 
 - Object detection and segmentation (YOLOv8)
 - Severity estimation 
 - Web demo (Streamlit)
+
+## Demo
+This following images demonstrate how the Car Damage Assessment System handle the image:
+1. Choose a image from a desktop for objection and segmentation
+![alt text](image.png)
+
+2. Object Detection Result
+![alt text](image-1.png)
+
+3. Object Segmentation Result
+![alt text](image-2.png)
 
 ## Main Features
 - Classify car damage types from images
