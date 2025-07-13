@@ -12,7 +12,7 @@ This project provides an end-to-end solution for Sun* Insurance Company for car 
 - Severity estimation 
 - Web demo (Streamlit)
 
-## 🚀 Technology Stack
+## TechStack
 
 ### Backend
 
