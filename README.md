@@ -2,7 +2,7 @@
 
 ## Author
 - Name: Nguyen Tuan Ngoc
-- University: DUT
+- University: Danang University of Science and Technology (DUT)
 - Student ID: 102230087
 
 ## Project Overview
