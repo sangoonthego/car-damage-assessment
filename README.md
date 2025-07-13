@@ -40,6 +40,8 @@ Model weights are not included in the repository. Download them from Google Driv
 - [yolov8s.pt](https://drive.google.com/drive/u/0/folders/1BZrsCd0w1LLyp7skGPFr9yNJtmrVdNJ5)
 
 ## Quick Start
+
+### Option 1: Local Installation
 1. Install dependencies:
    ```bash
    pip install -r requirements.txt
@@ -50,6 +52,18 @@ Model weights are not included in the repository. Download them from Google Driv
    streamlit run streamlit_app.py
    ```
 4. Or run training/evaluation scripts in `scripts/`.
+
+### Option 2: Docker (Recommended)
+1. Build the Docker image:
+   ```bash
+   docker build -t car-damage-assessment .
+   ```
+2. Download model weights from Google Drive and place them in the `models/` folder.
+3. Run the container:
+   ```bash
+   docker run -p 8501:8501 -v $(pwd)/models:/app/models car-damage-assessment
+   ```
+4. Open your browser and navigate to `http://localhost:8501`
 
 ## Demo
 Below are some demo screenshots of the application in action:
