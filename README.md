@@ -12,16 +12,30 @@ This project provides an end-to-end solution for Sun* Insurance Company for car 
 - Severity estimation 
 - Web demo (Streamlit)
 
-## Main Features
-- Classify car damage types from images
-- Detect and segment damaged car parts
-- Estimate severity of damage
-- REST API and Streamlit web demo
+## 🚀 Technology Stack
 
-## Technology Stack
-- **Backend**: Python, PyTorch, FastAPI, OpenCV, Ultralytics YOLO, Pandas, Matplotlib, TQDM
-- **Frontend**: Streamlit
-- **Other**: scikit-learn, PIL, seaborn
+### Backend
+
+| Technology         | Version  | Reason for Choice                                                        |
+|--------------------|----------|--------------------------------------------------------------------------|
+| Python             | 3.9+     | Powerful for AI/ML, large community, rich ecosystem                      |
+| FastAPI            | Latest   | Modern, high-performance web framework, easy to build REST APIs           |
+| PyTorch            | Latest   | Leading deep learning framework, research and production ready            |
+| Ultralytics YOLO   | Latest   | State-of-the-art object detection/segmentation, easy integration          |
+| OpenCV             | 4.8+     | Powerful image processing, many utilities for preprocessing               |
+| Pandas             | Latest   | Efficient data manipulation and analysis                                  |
+| scikit-learn       | Latest   | Traditional ML library, supports evaluation and preprocessing             |
+| Uvicorn            | Latest   | Lightweight ASGI server, optimized for FastAPI                            |
+| MySQL Connector    | Latest   | Database connectivity and operations with MySQL                           |
+
+### Frontend
+
+| Technology   | Version  | Reason for Choice                                         |
+|--------------|----------|----------------------------------------------------------|
+| Streamlit    | Latest   | Rapid web app development for AI/ML, intuitive and easy   |
+| Matplotlib   | Latest   | Data visualization and plotting                           |
+| Seaborn      | Latest   | Advanced, beautiful data visualization                    |
+| Pillow       | Latest   | Basic image processing, supports many formats             |
 
 ## Project Structure
 ```
