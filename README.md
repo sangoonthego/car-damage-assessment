@@ -6,7 +6,7 @@
 - Student ID: 102230087
 
 ## Project Overview
-This project provides an end-to-end solution for Sun* Insurance Company for car damage assessment using deep learning. It includes:
+This project provides an end-to-end solution for car damage assessment using deep learning. It includes:
 - Damage classification (ResNet18)
 - Object detection and segmentation (YOLOv8)
 - Severity estimation 
