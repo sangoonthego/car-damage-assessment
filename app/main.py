@@ -5,15 +5,15 @@ from fastapi.staticfiles import StaticFiles
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from app.predict_query import PredictionLogManager, UpdateLog
-from app.detect_query import DetectionLogManager
-from app.segment_query import SegmentationLogManager
+from db.predict_query import PredictionLogManager, UpdateLog
+from yolov8.utils.detect_query import DetectionLogManager
+from yolov8.utils.segment_query import SegmentationLogManager
 
-from app.model_loader import ModelLoader
+from scripts.model_loader import ModelLoader
 
-from app.predict_image import ImagePredictor
-from app.detect_utils import ObjectDetector
-from app.segment_utils import ObjectSegmenter
+from db.predict_image import ImagePredictor
+from yolov8.utils.detect_utils import ObjectDetector
+from yolov8.utils.segment_utils import ObjectSegmenter
 
 from scripts.utils import model_path, class_names
 

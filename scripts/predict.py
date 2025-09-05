@@ -6,8 +6,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import matplotlib.pyplot as plt
 from PIL import Image
 
-from app.model_loader import ModelLoader
-from app.predict_image import ImagePredictor
+from scripts.model_loader import ModelLoader
+from db.predict_image import ImagePredictor
 from scripts.utils import model_path, device, transform
 from scripts.utils import test_dir
 
@@ -50,5 +50,5 @@ class CarDamagePredictor:
 
 if __name__ == "__main__":
     predictor = CarDamagePredictor(model_path, test_dir)
-    predictor.predict_image_file("image/10.jpeg")
+    predictor.predict_image_file("image/6.jpeg")
     # predictor.predict_directory("predict_image")

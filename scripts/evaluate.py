@@ -5,7 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import torch
 from torchvision import datasets
 from torch.utils.data import DataLoader
-from app.model_loader import ModelLoader
+from scripts.model_loader import ModelLoader
 
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt

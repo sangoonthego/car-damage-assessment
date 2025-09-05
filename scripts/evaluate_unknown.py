@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, Dataset
 from torchvision.datasets.folder import default_loader
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from app.model_loader import ModelLoader
+from scripts.model_loader import ModelLoader
 from scripts.utils import batch_size, threshold, device, model_path, transform
 
 class UnknownDataset(Dataset):
