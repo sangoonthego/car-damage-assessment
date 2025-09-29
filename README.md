@@ -6,6 +6,8 @@
 - University: Danang University of Science and Technology (DUT)
 - Student ID: 102230087
 
+## Collaborator
+
 - Name: Le Van Gia Huy
 - University: Danang University of Science and Technology (DUT)
 - Student ID: 102230244
