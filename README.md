@@ -6,6 +6,10 @@
 - University: Danang University of Science and Technology (DUT)
 - Student ID: 102230087
 
+- Name: Le Van Gia Huy
+- University: Danang University of Science and Technology (DUT)
+- Student ID: 102230244
+
 End-to-end car damage assessment using deep learning:
 - Damage classification (ResNet18)
 - Object detection and segmentation (YOLOv8)
