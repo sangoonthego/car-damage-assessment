@@ -16,7 +16,7 @@ End-to-end car damage assessment using deep learning:
 - Damage classification (ResNet18)
 - Object detection and segmentation (YOLOv8)
 - Severity estimation
-- Web demo (Streamlit) and REST API (FastAPI)
+- Web demo (MERN Stack): https://github.com/sangoonthego/car-damage-assessment-system
 
 ## Tech Stack
 
