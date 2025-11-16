@@ -1,3 +1,7 @@
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 class SeverityLevel:
     def __init__(self, class_name):
         self.class_name = class_name.lower().strip()
@@ -12,7 +16,7 @@ class SeverityLevel:
     
     def to_dict(self):
         return {
-            "class": self.class_names,
+            "class": self.class_name,
             "severity": self.severity
         }
     
